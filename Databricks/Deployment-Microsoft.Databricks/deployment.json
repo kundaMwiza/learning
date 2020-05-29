@@ -1,0 +1,53 @@
+{
+  "id": "/subscriptions/6f0428ee-7027-44e7-9e8d-b53243d71949/resourceGroups/24Benzine/providers/Microsoft.Resources/deployments/Microsoft.Databricks",
+  "name": "Microsoft.Databricks",
+  "type": "Microsoft.Resources/deployments",
+  "tags": {
+    "primaryResourceId": "/subscriptions/6f0428ee-7027-44e7-9e8d-b53243d71949/resourceGroups/24Benzine/providers/Microsoft.Databricks/workspaces/HelloWorld",
+    "marketplaceItemId": "Microsoft.Databricks"
+  },
+  "properties": {
+    "templateHash": "4578769962826184669",
+    "parameters": {
+      "location": {
+        "type": "String",
+        "value": "uksouth"
+      },
+      "workspaceName": {
+        "type": "String",
+        "value": "HelloWorld"
+      },
+      "tier": {
+        "type": "String",
+        "value": "trial"
+      },
+      "tagValues": {
+        "type": "Object",
+        "value": {}
+      }
+    },
+    "mode": "Incremental",
+    "debugSetting": {
+      "detailLevel": "None"
+    },
+    "provisioningState": "Running",
+    "timestamp": "2020-04-06T18:55:33.9765885Z",
+    "duration": "PT1M4.6190371S",
+    "correlationId": "85927de0-7e50-4e3c-b8b6-9591bb07a998",
+    "providers": [
+      {
+        "namespace": "Microsoft.Databricks",
+        "resourceTypes": [
+          {
+            "resourceType": "workspaces",
+            "locations": [
+              "uksouth"
+            ]
+          }
+        ]
+      }
+    ],
+    "dependencies": [],
+    "validationLevel": "Template"
+  }
+}
