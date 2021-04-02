@@ -179,7 +179,7 @@ int main() {
     // v.push_back adds an element with value t to end of v
     // v[n] returns a reference of type (same as element type in vector definition)
     // v1 = v2 elements in v2 are copied into v1, must have the same element type
-    // v1 = {a, b, c} assignment, replace the elements in v1 with a copy of the lements in the list
+    // v1 = {a, b, c} assignment, replace the elements in v1 with a copy of the elements in the list
     // v1 == v2 are equal if they have the same number of elements and each element is equal
     // comparison operators e.g. <, <=, >, >=
     // note that to access the operations that can be performed on a vecotr v of type int
