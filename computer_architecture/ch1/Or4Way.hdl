@@ -1,0 +1,18 @@
+/**
+ * 4 way Or
+ * inputs: a, b, c, d
+ * output: Or(a,b,c,d) = 1 iff atleast one of the inputs is true
+ */
+
+CHIP Or4Way {
+
+    IN in[4];
+    OUT out; 
+
+    PARTS:
+
+    Or(a=in[0], b=in[1], out=aOrB);
+    Or(a=aOrB, b=in[2], out=aOrBOrC);
+    Or(a=aOrBOrC, b=in, out=out);
+
+}

@@ -1,0 +1,16 @@
+/** 
+ * 8 way AND gate
+ * input in[8]
+ * output AND(a,b,c,.., d) = all must be true
+ */
+
+CHIP And8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+
+    And4Way(in=in[0..3], out=aBCD);
+    And4Way(in=in[4..7], out=eFGH);
+    And(a=aBCD, b=eFGH, out=out);
+}

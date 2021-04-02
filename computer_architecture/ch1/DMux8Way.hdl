@@ -1,0 +1,46 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    // Put your code here:
+
+    // Note that index counting starts from the right..
+
+    // negatives
+    Not(in=sel[0], out=barSel0);
+    Not(in=sel[1], out=barSel1);
+    Not(in=sel[2], out=barSel2);
+
+    // a
+    And4Way(in[0]=barSel0, in[1]=barSel1, in[2]=barSel2, in[3]=in, out=a);
+    // b
+    And4Way(in[0]=sel[0], in[1]=barSel1, in[2]=barSel2, in[3]=in, out=b);
+    // c
+    And4Way(in[0]=barSel0, in[1]=sel[1], in[2]=barSel2, in[3]=in, out=c);
+    // d
+    And4Way(in[0]=sel[0], in[1]=sel[1], in[2]=barSel2, in[3]=in, out=d);
+    // e
+    And4Way(in[0]=barSel0, in[1]=barSel1, in[2]=sel[2],  in[3]=in, out=e);
+    // f
+    And4Way(in[0]=sel[0], in[1]=barSel1, in[2]=sel[2],  in[3]=in, out=f);
+    // g
+    And4Way(in[0]=barSel0, in[1]=sel[1], in[2]=sel[2],  in[3]=in, out=g);
+    // h
+    And4Way(in[0]=sel[0], in[1]=sel[1], in[2]=sel[2],  in[3]=in, out=h);
+
+
+}

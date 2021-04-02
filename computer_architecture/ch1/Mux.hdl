@@ -1,0 +1,42 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux.hdl
+
+/** 
+ * Multiplexor:
+ * out = a if sel == 0
+ *       b otherwise
+ */
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    
+    // Put your code here:
+    
+    // Full solution is abarbsel + abselbar + ab
+    // says, output bit is 1 iff atrue&aselected or btrue&bselected or ctrue&cselected
+    // this is in contract which a demultiplexor, which says 
+    // output stream 1 has value 1 iff it has been selected, and the in, input is true
+
+    // abarbsel  
+    Not(in=a, out=aBar);
+    And3Way(a=aBar, b=b, c=sel, out=aBarBSelOut);
+
+    // abbarselbar
+    Not(in=sel, out=selBar);
+    Not(in=b, out=bBar);
+    And3Way(a=a, b=bBar, c=selBar, out=aBBarSelBarOut);
+
+
+    // ab 
+    And(a=a, b=b, out=aBOut);
+
+    // Now combine 
+    // could use an Or 4 way here but oh well..
+    Or(a=aBarBSelOut, b=aBBarSelBarOut, out=firstOut);
+    Or(a=firstOut, b=aBOut, out=out);
+}

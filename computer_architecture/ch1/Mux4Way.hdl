@@ -1,0 +1,24 @@
+/*
+ * Mux 4 way 
+ * inputs: in[4], sel[2]
+ * output: one of in[4]
+ * 00 for in[0], 01 for in[1], 10 for in[2], 11 for in[3]
+ */
+ 
+CHIP Mux4Way {
+
+    IN in[4], sel[2];
+    OUT out;
+
+    PARTS:
+
+    Not(in=sel[0], out=barSel0);
+    Not(in=sel[1], out=barSel1);
+
+    And3Way(a=in[0], b=barSel1, c=barSel0, out=bitA);
+    And3Way(a=in[1], b=barSel1, c=sel[0], out=bitB);
+    And3Way(a=in[2], b=sel[1], c=barSel0, out=bitC);
+    And3Way(a=in[3], b=sel[1], c=sel[0], out=bitD);
+    Or4Way(in[0]=bitA, in[1]=bitB, in[2]=bitC, in[3]=bitD, out=out);
+
+}

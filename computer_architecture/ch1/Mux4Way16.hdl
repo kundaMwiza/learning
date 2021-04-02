@@ -1,0 +1,86 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    // per bit we want, e.g. for the first output bit:
+    // out[0] = a[0]&sel=00 or b[0]&sel=01 or c[0]&sel=10 or d[0]&sel=11
+
+    // 0 
+    Mux4Way(in[0]=a[0], in[1]=b[0], in[2]=c[0], in[3]=d[0], sel=sel, out=out[0]);
+
+    // 1
+    Mux4Way(in[0]=a[1], in[1]=b[1], in[2]=c[1], in[3]=d[1], sel=sel, out=out[1]);
+
+
+    // 2
+    Mux4Way(in[0]=a[2], in[1]=b[2], in[2]=c[2], in[3]=d[2], sel=sel, out=out[2]);
+
+
+    // 3
+    Mux4Way(in[0]=a[3], in[1]=b[3], in[2]=c[3], in[3]=d[3], sel=sel, out=out[3]);
+
+
+    // 4
+    Mux4Way(in[0]=a[4], in[1]=b[4], in[2]=c[4], in[3]=d[4], sel=sel, out=out[4]);
+
+
+    // 5
+    Mux4Way(in[0]=a[5], in[1]=b[5], in[2]=c[5], in[3]=d[5], sel=sel, out=out[5]);
+
+
+    // 6
+    Mux4Way(in[0]=a[6], in[1]=b[6], in[2]=c[6], in[3]=d[6], sel=sel, out=out[6]);
+
+
+    // 7
+    Mux4Way(in[0]=a[7], in[1]=b[7], in[2]=c[7], in[3]=d[7], sel=sel, out=out[7]);
+
+
+    // 8
+    Mux4Way(in[0]=a[8], in[1]=b[8], in[2]=c[8], in[3]=d[8], sel=sel, out=out[8]);
+
+
+    // 9
+    Mux4Way(in[0]=a[9], in[1]=b[9], in[2]=c[9], in[3]=d[9], sel=sel, out=out[9]);
+
+
+    // 10
+    Mux4Way(in[0]=a[10], in[1]=b[10], in[2]=c[10], in[3]=d[10], sel=sel, out=out[10]);
+
+
+
+    // 11
+    Mux4Way(in[0]=a[11], in[1]=b[11], in[2]=c[11], in[3]=d[11], sel=sel, out=out[11]);
+
+
+    // 12
+    Mux4Way(in[0]=a[12], in[1]=b[12], in[2]=c[12], in[3]=d[12], sel=sel, out=out[12]);
+
+
+    // 13
+    Mux4Way(in[0]=a[13], in[1]=b[13], in[2]=c[13], in[3]=d[13], sel=sel, out=out[13]);
+
+    // 14
+    Mux4Way(in[0]=a[14], in[1]=b[14], in[2]=c[14], in[3]=d[14], sel=sel, out=out[14]);
+
+
+    // 15
+    Mux4Way(in[0]=a[15], in[1]=b[15], in[2]=c[15], in[3]=d[15], sel=sel, out=out[15]);
+
+
+}

@@ -1,0 +1,31 @@
+/*
+ * Mux 8 way 
+ * inputs: in[8], sel[3]
+ * output: one of in[8]
+ * 000 for in[0], 001 for in[1], 010 for in[3], 011 for in[3],..
+ */
+ 
+CHIP Mux8Way {
+
+    IN in[8], sel[3];
+    OUT out;
+
+    PARTS:
+
+    Not(in=sel[0], out=barSel0);
+    Not(in=sel[1], out=barSel1);
+    Not(in=sel[2], out=barSel2);
+
+    And4Way(in[0]=in[0], in[1]=barSel2, in[2]=barSel1, in[3]=barSel0, out=bitA);
+    And4Way(in[0]=in[1], in[1]=barSel2, in[2]=barSel1, in[3]=sel[0], out=bitB);
+    And4Way(in[0]=in[2], in[1]=barSel2, in[2]=sel[1], in[3]=barSel0, out=bitC);
+    And4Way(in[0]=in[3], in[1]=barSel2, in[2]=sel[1], in[3]=sel[0], out=bitD);
+    And4Way(in[0]=in[4], in[1]=sel[2], in[2]=barSel1, in[3]=barSel0, out=bitE);
+    And4Way(in[0]=in[5], in[1]=sel[2], in[2]=barSel1, in[3]=sel[0], out=bitF);
+    And4Way(in[0]=in[6], in[1]=sel[2], in[2]=sel[1], in[3]=barSel0, out=bitG);
+    And4Way(in[0]=in[7], in[1]=sel[2], in[2]=sel[1], in[3]=sel[0], out=bitH);
+
+    Or8Way(in[0]=bitA, in[1]=bitB, in[2]=bitC, in[3]=bitD
+        , in[4]=bitE, in[5]=bitF, in[6]=bitG, in[7]=bitH, out=out);
+    
+}
