@@ -1,0 +1,112 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/05/CPU.hdl
+
+/**
+ * The Hack CPU (Central Processing unit), consisting of an ALU,
+ * two registers named A and D, and a program counter named PC.
+ * The CPU is designed to fetch and execute instructions written in 
+ * the Hack machine language. In particular, functions as follows:
+ * Executes the inputted instruction according to the Hack machine 
+ * language specification. The D and A in the language specification
+ * refer to CPU-resident registers, while M refers to the external
+ * memory location addressed by A, i.e. to Memory[A]. The inM input 
+ * holds the value of this location. If the current instruction needs 
+ * to write a value to M, the value is placed in outM, the address 
+ * of the target location is placed in the addressM output, and the 
+ * writeM control bit is asserted. (When writeM==0, any value may 
+ * appear in outM). The outM and writeM outputs are combinational: 
+ * they are affected instantaneously by the execution of the current 
+ * instruction. The addressM and pc outputs are clocked: although they 
+ * are affected by the execution of the current instruction, they commit 
+ * to their new values only in the next time step. If reset==1 then the 
+ * CPU jumps to address 0 (i.e. pc is set to 0 in next time step) rather 
+ * than to the address resulting from executing the current instruction. 
+ */
+
+CHIP CPU {
+
+    IN  inM[16],         // M value input  (M = contents of RAM[A])
+        instruction[16], // Instruction for execution
+        reset;           // Signals whether to re-start the current
+                         // program (reset==1) or continue executing
+                         // the current program (reset==0).
+
+    OUT outM[16],        // M value output
+        writeM,          // Write to M? 
+        addressM[15],    // Address in data memory (of M)
+        pc[15];          // address of next instruction
+
+    PARTS:
+    // Put your code here:
+
+    // control bus
+
+    // control for whether an instruction is an A or C instruction
+    And(a=instruction[15], b=true, out=instType);
+    // negation for instType
+    Not(in=instType, out=notInstType);
+
+    // control for writing to the A register -> 
+    // should only write to the A register only if an A instruction is 
+    // being executed, or the destination of a C instruction includes A
+    And(a=instType, b=instruction[5], out=destA);
+    Or(a=notInstType, b=destA, out=writeA);
+
+    // control for writing to the D register -> 
+    // should only write to the D register only if the destination 
+    // of a C instrution includes the D register
+    And(a=instType, b=instruction[4], out=destD);
+
+    // control for writing to the pseudo M register in 
+    // data memory, should only do so is the instruction 
+    // type if C, and the destination of the C instruction 
+    // includes the M register
+    And(a=instType, b=instruction[3], out=writeM);
+
+    // control for choosing M or A as input to the ALU
+    // choose M only if C instruction and a bit is switched on
+    And(a=instType, b=instruction[12], out=selMuxALU);    
+
+    // control for writing to the PC
+    // Should only write to PC if:
+    // reset = 1, so that 0 is written to the PC or
+    // Instruction type is a C instruction, jump statement condition passes
+    And(a=instruction[2], b=ALULessZeroCond, out=lessZeroCond);
+    And(a=instruction[1], b=ALUZeroCond, out=zeroCond);
+    // for the greater COND, need And(Not(ALULessZeroCond), Not(ALUZerocond))
+    Not(in=ALULessZeroCond, out=NotALULessZeroCond);
+    Not(in=ALUZeroCond, out=NotALUZeroCond);
+    And(a=NotALULessZeroCond, b=NotALUZeroCond, out=ALUGreaterCond);
+    And(a=instruction[0], b=ALUGreaterCond, out=greaterZeroCond);
+    // Write PC if C instruction jump statement passes Or reset = 1 
+    Or(a=greaterZeroCond, b=zeroCond, out=geqOut);
+    Or(a=geqOut, b=lessZeroCond, out=anyCondTrue);
+    And(a=instType, b=anyCondTrue, out=writePCJump);
+
+    // control for whether to increment the PC register or not
+    // this should only be TRUE if both reset and writePCJump are false
+    Not(in=writePCJump, out=notWritePCJump);
+    Not(in=reset, out=notReset);
+    And(a=notWritePCJump, b=notReset, out=incPC);
+    
+    // Mux for A register
+    Mux16(a=outALUinternal, b=instruction, sel=notInstType, out=regAInput);
+
+    // Register A
+    ARegister(in=regAInput, load=writeA, out=outARegister, out[0..14]=addressM);
+
+    // Mux input to ALU A/M
+    Mux16(a=outARegister, b=inM, sel=selMuxALU, out=ALUInput);
+
+    // Register D
+    DRegister(in=outALUinternal, load=destD, out=outDRegister);
+
+    // PC register 
+    PC(in=outARegister, load=writePCJump, inc=incPC, reset=reset, out[0..14]=pc);
+    
+    // ALU
+    ALU(x=outDRegister, y=ALUInput, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, zr=ALUZeroCond, ng=ALULessZeroCond, out=outALUinternal);
+
+}

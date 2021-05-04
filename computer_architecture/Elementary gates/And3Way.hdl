@@ -1,0 +1,15 @@
+/** 
+ * 3 way AND gate
+ * input a, b, c
+ * output AND(a,b,c) = all must be true
+ */
+
+CHIP And3Way {
+    IN a, b, c;
+    OUT out;
+
+    PARTS:
+
+    And(a=a, b=b, out=aB);
+    And(a=aB, b=c, out=out);
+}

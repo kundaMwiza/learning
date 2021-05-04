@@ -1,0 +1,45 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/PC.hdl
+
+/**
+ * A 16-bit counter with load and reset control bits.
+ * if      (reset[t] == 1) out[t+1] = 0
+ * else if (load[t] == 1)  out[t+1] = in[t]
+ * else if (inc[t] == 1)   out[t+1] = out[t] + 1  (integer addition)
+ * else                    out[t+1] = out[t]
+ */
+
+CHIP PC {
+    IN in[16],load,inc,reset;
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+
+    // 00 -> reset, 01 -> load, 10 -> integer addition, 11-> keep out[t]
+    // LSB = resetBarIncLoadBar + resetincBarloadBar
+    // MSB = resetBarIncBarload + resetincBarloadBar
+
+    Not(in=inc, out=incBar);
+    Not(in=load, out=loadBar);
+    Not(in=reset, out=resetBar);
+
+    And(a=resetBar, b=load, out=resetBarLoad);
+    
+    And(a=resetBar, b=inc, out=resetBarInc);
+    And(a=resetBarInc, b=loadBar, out=resetBarIncLoadBar);
+
+    Or(a=resetBarIncLoadBar, b=reset, out=bit0);
+    Or(a=resetBarLoad, b=reset, out=bit1);
+
+    Add16(a=loop, b[0]=true, b[1..15]=false, out=loopPlusOne);
+    Mux4Way16(a=loop, b=loopPlusOne, c=in, d[0..15]=false, sel[0]=bit0, sel[1]=bit1, out=data);
+    
+    // write if one of load, inc or reset is 1, else load
+    Or(a=load, b=inc, out=loadInc);
+    Or(a=loadInc, b=reset, out=loadIncReset);
+
+    Register(in=data, load=loadIncReset, out=out, out=loop);
+}

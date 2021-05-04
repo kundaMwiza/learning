@@ -1,0 +1,53 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/b/RAM4K.hdl
+
+/**
+ * Memory of 4K registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+
+CHIP RAM4K {
+    IN in[16], load, address[12];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+
+    Not(in=address[9], out=add1Neg);
+    Not(in=address[10], out=add2Neg);
+    Not(in=address[11], out=add3Neg);
+
+    // the load bit, if 1, should only be passed to the memory bank that is selected
+    // we should only write to the memory bank if it has been selected.
+
+    And4Way(in[0]=add1Neg, in[1]=add2Neg, in[2]=add3Neg, in[3]=load, out=loadAdd0);
+    RAM512(in=in, load=loadAdd0, address[0..8]=address[0..8], out=out0);
+
+    And4Way(in[0]=address[9], in[1]=add2Neg, in[2]=add3Neg, in[3]=load, out=loadAdd1);
+    RAM512(in=in, load=loadAdd1, address[0..8]=address[0..8], out=out1);
+
+    And4Way(in[0]=add1Neg, in[1]=address[10], in[2]=add3Neg, in[3]=load, out=loadAdd2);
+    RAM512(in=in, load=loadAdd2, address[0..8]=address[0..8], out=out2);
+    
+    And4Way(in[0]=address[9], in[1]=address[10], in[2]=add3Neg, in[3]=load, out=loadAdd3);
+    RAM512(in=in, load=loadAdd3, address[0..8]=address[0..8], out=out3);
+    
+    And4Way(in[0]=add1Neg, in[1]=add2Neg, in[2]=address[11], in[3]=load, out=loadAdd4);
+    RAM512(in=in, load=loadAdd4, address[0..8]=address[0..8], out=out4);
+
+    And4Way(in[0]=address[9], in[1]=add2Neg, in[2]=address[11], in[3]=load, out=loadAdd5);
+    RAM512(in=in, load=loadAdd5, address[0..8]=address[0..8], out=out5);
+
+    And4Way(in[0]=add1Neg, in[1]=address[10], in[2]=address[11], in[3]=load, out=loadAdd6);
+    RAM512(in=in, load=loadAdd6, address[0..8]=address[0..8], out=out6);
+
+    And4Way(in[0]=address[9], in[1]=address[10], in[2]=address[11], in[3]=load, out=loadAdd7);
+    RAM512(in=in, load=loadAdd7, address[0..8]=address[0..8], out=out7);
+
+    Mux8Way16(a=out0, b=out1, c=out2, d=out3, e=out4, f=out5, g=out6, h=out7, sel=address[9..11], out=out);
+
+}

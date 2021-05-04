@@ -1,0 +1,15 @@
+/** 
+ * 4 way AND gate
+ * input in[4]
+ * output AND(a,b,c, d) = all must be true
+ */
+
+CHIP And4Way {
+    IN in[4];
+    OUT out;
+
+    PARTS:
+
+    And3Way(a=in[0], b=in[1], c=in[2], out=aBC);
+    And(a=aBC, b=in[3], out=out);
+}
