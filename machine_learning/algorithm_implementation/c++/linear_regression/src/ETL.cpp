@@ -95,12 +95,12 @@ ETL::train_test_split(Eigen::MatrixXd &data, float train_size) const
 }
 
 std::pair<double, double>
-ETL::_get_mean_std(Eigen::MatrixXd col) const
+ETL::_get_mean_std(Eigen::Ref<Eigen::MatrixXd> col) const
 {
 
     double mean = col.mean();
     // unbiased std
-    double std = sqrt(((col.array() - mean).matrix().squaredNorm() / (col.rows() - 1)));
+    double std = std::sqrt(((col.array() - mean).matrix().squaredNorm() / (col.rows() - 1)));
 
     return std::make_pair(mean, std);
 }
@@ -130,4 +130,11 @@ Eigen::MatrixXd ETL::normalize_data(
     X = (X.rowwise() - norm_stats.first.transpose()) * norm_stats.second.cwiseInverse().asDiagonal();
 
     return X;
+}
+
+void ETL::add_constant_col(Eigen::MatrixXd &mat) const
+{
+    //
+    mat.conservativeResize(mat.rows(), mat.cols() + 1);
+    mat(Eigen::all, Eigen::last) = Eigen::MatrixXd::Ones(mat.rows(), 1);
 }

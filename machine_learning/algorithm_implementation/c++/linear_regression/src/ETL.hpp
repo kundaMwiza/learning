@@ -35,13 +35,16 @@ public:
         Eigen::MatrixXd &X,
         std::pair<Eigen::VectorXd, Eigen::VectorXd> &norm_stats) const;
 
+    // add a constant column to the input matrices
+    void add_constant_col(Eigen::MatrixXd &mat) const;
+
 private:
     std::string filename;
     char delim;
     bool header;
 
     map_type _get_column_names(std::ifstream &) const;
-    std::pair<double, double> _get_mean_std(Eigen::MatrixXd col) const;
+    std::pair<double, double> _get_mean_std(Eigen::Ref<Eigen::MatrixXd> col) const;
 };
 
 #endif
