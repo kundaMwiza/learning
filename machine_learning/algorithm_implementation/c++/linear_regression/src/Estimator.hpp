@@ -22,8 +22,6 @@ public:
 
     // prediction function
     virtual Eigen::MatrixXd predict(const Eigen::MatrixXd &data) const = 0;
-
-private:
 };
 
 #endif

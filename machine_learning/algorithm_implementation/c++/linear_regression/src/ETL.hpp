@@ -12,9 +12,11 @@ class ETL
 {
 
 public:
+    // type alias ---
     using csv_type = std::vector<std::vector<std::string> >;
     using map_type = std::map<unsigned int, std::string>;
 
+    // member functions ---
     ETL(std::string name, char delim, bool header)
         : filename(name), delim(delim), header(header) {}
 
@@ -39,12 +41,14 @@ public:
     void add_constant_col(Eigen::MatrixXd &mat) const;
 
 private:
+    // member functions ---
+    map_type _get_column_names(std::ifstream &) const;
+    std::pair<double, double> _get_mean_std(Eigen::Ref<Eigen::MatrixXd> col) const;
+
+    // data members ---
     std::string filename;
     char delim;
     bool header;
-
-    map_type _get_column_names(std::ifstream &) const;
-    std::pair<double, double> _get_mean_std(Eigen::Ref<Eigen::MatrixXd> col) const;
 };
 
 #endif
