@@ -84,7 +84,6 @@ unsigned int SmartETL::_process_resources(resource_map &data, unsigned int id, s
     tokenizer_type res_tok(line_str, d);
     auto b = res_tok.begin(), e = res_tok.end();
 
-    // std::cout << "line read: " << line_str << std::endl;
     // if either the first token is equal to eof
     // return status code 1
     if (b == e)
@@ -99,7 +98,6 @@ unsigned int SmartETL::_process_resources(resource_map &data, unsigned int id, s
 
     while (std::getline(input_file, line_str))
     {
-        // std::cout << "line read: " << line_str << std::endl;
         tokenizer_type res_tok(line_str, d);
 
         // if no token exit, as there are no more resources..
