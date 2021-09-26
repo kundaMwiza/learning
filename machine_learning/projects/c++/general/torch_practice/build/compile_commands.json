@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/torch_practice/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/g++ -isystem /usr/local/include -isystem /usr/local/include/torch/csrc/api/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -std=gnu++14 -o CMakeFiles/overview.dir/overview.cpp.o -c \"/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/torch_practice/overview.cpp\"",
+  "file": "/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/torch_practice/overview.cpp"
+}
+]

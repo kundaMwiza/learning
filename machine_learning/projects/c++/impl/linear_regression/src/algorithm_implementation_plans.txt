@@ -1,0 +1,6 @@
+- lambda search
+- selection methods 
+    - forward stepwise selection 
+    - backward stepwise selection 
+    - forward stagewise selection 
+- principal component analysis

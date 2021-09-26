@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/io/json/build",
+  "command": "/usr/bin/clang++  -I/Users/mwiza/cpp_libraries/boost_1_77_0 -I/Users/mwiza/cpp_libraries/json/single_include/nlohmann -I/Users/mwiza/cpp_libraries/OleanderStemmingLibrary/include/olestem -isystem /usr/local/include -isystem /usr/local/include/torch/csrc/api/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -std=gnu++14 -o CMakeFiles/main.dir/main.cpp.o -c \"/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/io/json/main.cpp\"",
+  "file": "/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/io/json/main.cpp"
+},
+{
+  "directory": "/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/io/json/build/ETL",
+  "command": "/usr/bin/clang++  -I/Users/mwiza/cpp_libraries/boost_1_77_0 -I/Users/mwiza/cpp_libraries/json/single_include/nlohmann -I/Users/mwiza/cpp_libraries/OleanderStemmingLibrary/include/olestem -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -std=gnu++14 -o CMakeFiles/ETL.dir/ETL.cpp.o -c \"/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/io/json/ETL/ETL.cpp\"",
+  "file": "/Users/mwiza/Google Drive/Learning/learning_repo/programming/c++/io/json/ETL/ETL.cpp"
+}
+]

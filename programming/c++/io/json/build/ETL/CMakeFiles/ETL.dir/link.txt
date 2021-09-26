@@ -1,0 +1,2 @@
+/usr/bin/ar qc libETL.a CMakeFiles/ETL.dir/ETL.cpp.o
+/usr/bin/ranlib libETL.a
