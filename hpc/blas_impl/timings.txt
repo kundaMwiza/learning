@@ -1,0 +1,12 @@
+3000 x 3000 
+
+1 thread mode (seconds):
+
+Naive impl took: 140.59947, Blocked impl took: 28.15001 
+
+4 thread mode: 
+
+Naive impl took: 80.87893, Blocked impl took: 11.79310 
+
+
+
