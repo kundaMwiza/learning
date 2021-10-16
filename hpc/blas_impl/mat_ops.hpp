@@ -4,9 +4,9 @@
 #include <random>
 #include <algorithm>
 #include <array>
+#include <vector>
 
 template <typename T>
-
 bool mat_equal(const T *A, const T *B, const unsigned int nrow, const unsigned int ncol, bool col_major = true)
 {
 
@@ -80,6 +80,7 @@ void print_matrix(const T *mat, const unsigned int nrow, const unsigned int ncol
               << std::endl;
 }
 
+template <typename T>
 class MatCreator
 {
 
@@ -94,44 +95,38 @@ public:
     }
 
     // member functions
-    template <typename T, const unsigned int nrow, const unsigned int ncol>
-    std::shared_ptr<std::array<T, nrow * ncol> > generate_int()
+    std::vector<T> generate_unif(const unsigned int nrow, const unsigned int ncol)
     {
-        std::shared_ptr<std::array<T, nrow *ncol> > mat = std::make_shared<std::array<T, nrow * ncol> >();
+        std::vector<T> mat(nrow * ncol);
 
         std::generate(
-            mat->begin(),
-            mat->end(),
+            mat.begin(),
+            mat.end(),
             [&]()
             { return dist(dev_engine); });
 
         return mat;
     }
 
-    template <typename T, const unsigned int nrow, const unsigned int ncol>
-    std::shared_ptr<std::array<T, nrow * ncol> > generate_zero() const
+    std::vector<T>
+    generate_zero(const unsigned int nrow, const unsigned int ncol) const
     {
-        std::shared_ptr<std::array<T, nrow *ncol> > mat = std::make_shared<std::array<T, nrow * ncol> >();
-        std::fill(
-            mat->begin(),
-            mat->end(),
-            0);
+        std::vector<T> mat(nrow * ncol, 0);
 
         return mat;
     }
 
-    template <typename T, const unsigned int nrow, const unsigned int ncol>
-    void fill_zero(std::shared_ptr<std::array<T, nrow * ncol> > &mat_ptr) const
+    void fill_zero(std::vector<T> &mat_ptr) const
     {
         std::fill(
-            mat_ptr->begin(),
-            mat_ptr->end(),
+            mat_ptr.begin(),
+            mat_ptr.end(),
             0);
     }
 
     const unsigned int seed;
     std::mt19937_64 dev_engine;
-    std::uniform_int_distribution<int> dist;
+    std::uniform_real_distribution<T> dist;
 };
 
 #endif

@@ -1,6 +1,5 @@
 #ifndef DGEMM
 #define DGEMM
-#define BLOCK_SIZE 64
 
 #include "mat_ops.hpp"
 #include <cmath>
@@ -10,12 +9,13 @@
 #include <omp.h>
 #endif
 
-template <
-    const unsigned int A_rows, const unsigned int A_cols,
-    const unsigned int B_cols, typename T>
+template <typename T>
 void dgemm_naive(
     T *A,
+    const unsigned int A_rows,
+    const unsigned int A_cols,
     T *B,
+    const unsigned int B_cols,
     T *C)
 {
     // var to write output to
@@ -51,7 +51,8 @@ void gebp(
     const unsigned int lower_Ar_pack,
     const unsigned int higher_Ar_pack,
     const unsigned int p,
-    const unsigned int m)
+    const unsigned int m,
+    const unsigned int BLOCK_SIZE)
 {
     // bounds for A pack and B pack
     unsigned int B_num_rows = (higher_Br_pack - lower_Br_pack) + 1;
@@ -61,7 +62,7 @@ void gebp(
     unsigned int c_i(0);
 
     // writing output for C
-    double cij(0);
+    T cij(0);
 #pragma omp parallel default(shared) private(cij, c_i)
     {
 #pragma omp for
@@ -84,27 +85,31 @@ void gebp(
 }
 
 /*
-Uses GEPP and GEBP 
+Uses GEPP and GEBP
 */
-template <
-    const unsigned int A_rows, const unsigned int A_cols,
-    const unsigned int B_cols, typename T>
+template <typename T>
 void dgemm(
-    const MatCreator &mc,
+    const MatCreator<T> &mc,
     T *A,
+    const unsigned int A_rows,
+    const unsigned int A_cols,
     T *B,
-    T *C)
+    const unsigned int B_cols,
+    T *C,
+    const unsigned int BLOCK_SIZE = 64)
 {
 
     // allocate memory for B_pack and A_pack
-    auto B_ptr = mc.generate_zero<T, A_cols, B_cols>();
-    if (B_ptr == nullptr)
+    auto B_vec = mc.generate_zero(A_cols, B_cols);
+    T *B_pack = B_vec.data();
+
+    if (B_pack == nullptr)
     {
         throw std::runtime_error("Unable to allocate memory for B pack");
     }
 
-    T *B_pack = B_ptr->data();
-    T A_pack[BLOCK_SIZE * BLOCK_SIZE] = {0};
+    auto A_vec = mc.generate_zero(BLOCK_SIZE, BLOCK_SIZE);
+    T *A_pack = A_vec.data();
 
     if (A_pack == nullptr)
     {
@@ -172,7 +177,8 @@ void dgemm(
                 lower_Ar_pack,
                 higher_Ar_pack,
                 p,
-                m);
+                m,
+                BLOCK_SIZE);
         }
     }
 }
